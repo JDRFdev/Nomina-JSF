@@ -17,13 +17,8 @@ public class NominaBean implements Serializable {
 	private NominaDTO nomina=new NominaDTO();
 	private static NominaService service=new NominaService(); 
 	public void agregarNomina(){
-		System.out.println("--- PROBANDO SI TRAE LOS DATOS ---");
-	    System.out.println("ID Trabajador: " + nomina.getEmpleado().getId());
-	    System.out.println("Salario Base: " + nomina.getEmpleado().getSalarioBase());
-	    System.out.println("Mes Nómina: " + nomina.getMesNomina());
-	    System.out.println("Días Trabajados: " + nomina.getDiasTrabajados());
 	    service.agregarNomina(nomina);
-	    this.nomina = new NominaDTO();	
+	    this.nomina=new NominaDTO();
 	}
 	public List<NominaDTO> obtenerNominas(){
 		return service.obtenerNominas();
