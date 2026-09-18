@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" 
+      xmlns:h="jakarta.faces.html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="jakarta.faces.core">
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Nómina</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: gray;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .grid_ {
+            display: grid;
+            grid-template-columns: 180px 1fr; 
+            gap: 15px 20px; 
+            align-items: center;
+        }
+
+        .margin_ {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .ui-inputfield, .ui-selectonemenu {
+            width: 100% !important;
+        }
+
+        .btn-container {
+            grid-column: span 2; 
+            display: flex;
+            justify-content: center;
+            gap: 15px; 
+            margin-top: 15px;
+        }
+
+        .ui-button {
+            padding: 10px 25px !important;
+            font-weight: bold !important;
+        }
+    </style>
+</h:head>
+<h:body>
+    <p:panel header="Panel de Registro" style="border:none;">
+        <h:form id="Nomina">
+            <p:messages id="mensajesValidacion" showSummary="false" showDetail="true" closable="true">
+                <p:autoUpdate />
+            </p:messages>
+
+            <div class="grid_">
+                <h:outputLabel value="Identificación:" for="identificacion" styleClass="form-label fw-bold"/>
+                <p:inputNumber id="identificacion" value="#{nominaBean.nomina.empleado.id}" styleClass="margin_" required="true" requiredMessage="El identificador es obligatorio">
+                    <f:validateLongRange minimum="1" maximum="9999999999" validatorMessage="Error en el id"/>
+                </p:inputNumber>
+              
+                <h:outputLabel value="Nombre:" for="Nombre" styleClass="form-label fw-bold"/>
+                <p:inputText id="Nombre" value="#{nominaBean.nomina.empleado.nombre}" placeholder="Ingrese el nombre" styleClass="margin_" required="true" requiredMessage="El nombre es obligatorio"/>
+                
+                <h:outputLabel value="Correo:" for="Correo" styleClass="form-label fw-bold"/>
+                <p:inputText id="Correo" value="#{nominaBean.nomina.empleado.correo}" placeholder="Ingrese el correo" styleClass="margin_" required="true" requiredMessage="El correo es obligatorio">
+                <f:validateRegex pattern="^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$" validatorMessage="El formato del correo no es válido"/>
+                </p:inputText>
+                
+                <h:outputLabel value="Teléfono:" for="Telefono" styleClass="form-label fw-bold"/>
+                <p:inputText id="Telefono" value="#{nominaBean.nomina.empleado.telefono}" placeholder="Ingrese el teléfono" styleClass="margin_" required="true" requiredMessage="El telefono es obligatorio"/>
+                
+                <h:outputLabel value="Dirección:" for="Direccion" styleClass="form-label fw-bold"/>
+                <p:inputText id="Direccion" value="#{nominaBean.nomina.empleado.direccion}" placeholder="Ingrese la dirección" styleClass="margin_" required="true" requiredMessage="La direccion es obligatoria"/>
+                
+                <h:outputLabel value="Salario Base:" for="salarioBase" styleClass="form-label fw-bold"/>
+                <p:selectOneMenu id="salarioBase" value="#{nominaBean.nomina.empleado.salarioBase}" styleClass="margin_" required="true" requiredMessage="Seleccione una opcion de salario base">
+                    <f:selectItem itemLabel="Seleccione una opción" itemValue=""/>
+                    <f:selectItem itemLabel="$1.750.000" itemValue="1750000"/>
+                    <f:selectItem itemLabel="$2.000.000" itemValue="2000000"/>
+                    <f:selectItem itemLabel="$2.500.000" itemValue="2500000"/>
+                    <f:selectItem itemLabel="$3.000.000" itemValue="3000000"/>
+                    <f:selectItem itemLabel="$4.000.000" itemValue="4000000"/>
+                    <f:selectItem itemLabel="$5.000.000" itemValue="5000000"/>
+                </p:selectOneMenu>
+            
+                <h:outputLabel value="Mes de la nómina:" for="mesNomina" styleClass="form-label fw-bold"/>
+                <p:selectOneMenu id="mesNomina" value="#{nominaBean.nomina.mesNomina}" styleClass="margin_" required="true" requiredMessage="Seleccione el mes de la nomina">
+                    <f:selectItem itemLabel="Seleccione el mes" itemValue=""/>
+                    <f:selectItem itemLabel="Enero" itemValue="Enero"/>
+                    <f:selectItem itemLabel="Febrero" itemValue="Febrero"/>
+                    <f:selectItem itemLabel="Marzo" itemValue="Marzo"/>
+                    <f:selectItem itemLabel="Abril" itemValue="Abril"/>
+                    <f:selectItem itemLabel="Mayo" itemValue="Mayo"/>
+                    <f:selectItem itemLabel="Junio" itemValue="Junio"/>
+                    <f:selectItem itemLabel="Julio" itemValue="Julio"/>
+                    <f:selectItem itemLabel="Agosto" itemValue="Agosto"/>
+                    <f:selectItem itemLabel="Septiembre" itemValue="Septiembre"/>
+                    <f:selectItem itemLabel="Octubre" itemValue="Octubre"/>
+                    <f:selectItem itemLabel="Noviembre" itemValue="Noviembre"/>
+                    <f:selectItem itemLabel="Diciembre" itemValue="Diciembre"/>
+                </p:selectOneMenu>
+                
+                <h:outputLabel value="Días Trabajados:" for="diasTrabajados" styleClass="form-label fw-bold"/>
+                <p:inputNumber id="diasTrabajados" value="#{nominaBean.nomina.diasTrabajados}" styleClass="margin_" required="true" requiredMessage="Los dias trabajados son obligatorios">
+                   <f:validateLongRange minimum="1" maximum="31" validatorMessage="Error en el numero de dias"/>
+                </p:inputNumber>
+                
+                <div class="btn-container">
+                    <p:commandButton value="Registrar Nómina" action="#{nominaBean.agregarNomina()}" update="registros"/>
+                    
+                    <p:commandButton value="Limpiar" process="@this" update="Nomina" styleClass="ui-button-secondary">
+                        <p:resetInput target="Nomina" />
+                    </p:commandButton>
+                </div>
+            </div>
+        </h:form>
+    </p:panel>
+    <br/>
+    <p:panel header="Registros" style="border:none;">
+        <p:dataTable id="registros" var="nomina" value="#{nominaBean.obtenerNominas()}" rows="6" paginator="true" pageLinks="5"
+                     paginatorTemplate="{FirstPageLink} {PageLinks} {LastPageLink}" stripedRows="true" resizableColumns="true">
+            <p:column headerText="ID">    
+                <h:outputText value="#{nomina.empleado.id}"/>
+            </p:column>
+             <p:column headerText="Nombre">    
+                <h:outputText value="#{nomina.empleado.nombre}"/>
+            </p:column>
+             <p:column headerText="Correo">    
+                <h:outputText value="#{nomina.empleado.correo}"/>
+            </p:column>
+               <p:column headerText="Telefono">    
+                <h:outputText value="#{nomina.empleado.telefono}"/>
+            </p:column>
+             <p:column headerText="Direccion">    
+                <h:outputText value="#{nomina.empleado.direccion}"/>
+            </p:column>
+            <p:column headerText="Mes">    
+                <h:outputText value="#{nomina.mesNomina}"/>
+            </p:column>
+            <p:column headerText="Salario Base">    
+                <h:outputText value="#{nomina.empleado.salarioBase}">
+                    <f:convertNumber pattern="$###,###.##"/>
+                </h:outputText>
+            </p:column>
+             <p:column headerText="Dias Trabajados">    
+                <h:outputText value="#{nomina.diasTrabajados}"/>
+            </p:column>
+             <p:column headerText="Salario Dev">    
+                <h:outputText value="#{nomina.calcularSalarioDevengado()}">
+                    <f:convertNumber pattern="$###,###.##"/>
+                </h:outputText>
+            </p:column>
+             <p:column headerText="Salud">    
+                <h:outputText value="#{nomina.calcularSalud()}">
+                    <f:convertNumber pattern="$###,###.##"/>
+                </h:outputText>
+            </p:column>
+             <p:column headerText="Pension">    
+                <h:outputText value="#{nomina.calcularPension()}">
+                    <f:convertNumber pattern="$###,###.##"/>
+                </h:outputText>
+            </p:column>
+             <p:column headerText="Aux Trans">    
+                <h:outputText value="#{nomina.calcularAuxilioTransporte()}">
+                    <f:convertNumber pattern="$###,###.##"/>
+                </h:outputText>
+            </p:column>
+            <p:column headerText="Total">    
+                <h:outputText value="#{nomina.calcularNomina()}">
+                    <f:convertNumber pattern="$###,###.##"/>
+                </h:outputText>
+            </p:column>
+        </p:dataTable>
+        <p:divider/>
+    </p:panel>
+   <script>
+        const diasmes = {
+            "Enero": 31,
+            "Febrero": 28,
+            "Marzo": 31,
+            "Abril": 30,
+            "Mayo": 31,
+            "Junio": 30,
+            "Julio": 31,
+            "Agosto": 31,
+            "Septiembre": 30,
+            "Octubre": 31,
+            "Noviembre": 30,
+            "Diciembre": 31
+        };
+
+        // Escuchamos el cambio en el select de PrimeFaces
+        $(document).on('change', 'select[id$="mesNomina"]', function() {
+            const mesSeleccionado = $(this).val();
+            const maxPermitido = diasmes[mesSeleccionado] || 31;
+            
+            // Buscamos el input de número que genera PrimeFaces
+            const $input = $('input[id$="diasTrabajados_input"]');
+            
+            // Actualizamos el atributo max estándar y el atributo data si lo usa el widget
+            $input.attr('max', maxPermitido);
+            
+            // Si el usuario ya tenía un número mayor al nuevo máximo, lo corregimos de inmediato
+            let valorActual = parseInt($input.val());
+            if (valorActual > maxPermitido) {
+                $input.val(maxPermitido);
+                // Disparamos el evento input para que PrimeFaces reconozca el cambio de valor
+                $input.trigger('input');
+            }
+        });
+    </script>
+</h:body>
+</html>
